@@ -23,10 +23,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.Scanner;
+import javax.swing.JPanel;
 
 public class carros {
 
 	private JFrame frame;
+	private JFrame pagina2;
 	private JTextField cpf;
 	private JPasswordField senha;
 	private static final carros banco = null;
@@ -37,6 +39,9 @@ public class carros {
 	String nomevendedor;
 	String status;
 	private JTextField campoplaca;
+	private JTextField camponome;
+	private JTextField campocpf;
+	private JPasswordField camposenha;
 
 	
 	// inicando coneccaoa ao banco
@@ -45,8 +50,8 @@ public class carros {
 	    //Conectando ao banco de dados//
 	  //tenho duas opções da banco de dados
 	    String servidor = "jdbc:mysql://sql10.db4free.net:3306/projetinho";
-	    String usuario = "";
-	    String senha = "";
+	    String usuario = "brendofcghh";
+	    String senha = "qwer1234";
 
 	    try {
 
@@ -76,6 +81,7 @@ public class carros {
 				try {
 					carros window = new carros();
 					window.frame.setVisible(true);
+					window.pagina2.setVisible(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -94,6 +100,12 @@ public class carros {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		pagina2 = new JFrame();
+		pagina2.setBounds(100, 100, 706, 576);
+		pagina2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pagina2.getContentPane().setLayout(null);
+		pagina2.setVisible(false);
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 706, 576);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,9 +140,19 @@ public class carros {
 
 			public void actionPerformed(ActionEvent e) {
 				
+				
+				
 				JButton botãoplaca = new JButton("Consultar");
 				botãoplaca.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						
+						
+						
+						
+						//cadastro usuario
+
+						
 						
 						JLabel ResultadoConsulta = new JLabel("");
 						ResultadoConsulta.setBounds(10, 83, 427, 443);
@@ -190,8 +212,8 @@ public class carros {
 						      
 						      r.close();
 						      s.close();
-						      fecharconeccao();
-		;				    } catch (SQLException e1) {
+						      fecharconeccao();				   
+						      } catch (SQLException e1) {
 						      e1.printStackTrace();
 						    }
 						
@@ -200,6 +222,98 @@ public class carros {
 				});
 				
 				
+				JButton botaoCadastroCarros = new JButton("Cadastrar Carro");
+				
+				
+				//cadatro do usuario
+			
+				
+				JButton Bottaoindocadastro = new JButton("Cadastrar Usuario");
+				Bottaoindocadastro.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+
+						frame.setVisible(false);
+						pagina2.setVisible(true);
+						
+						JPanel painelCadatroUsuario = new JPanel();
+						painelCadatroUsuario.setBounds(10, 11, 670, 515);
+						pagina2.getContentPane().add(painelCadatroUsuario);
+						painelCadatroUsuario.setLayout(null);
+						painelCadatroUsuario.setVisible(true);
+						
+						JLabel textNome = new JLabel("NOME");
+						textNome.setBounds(10, 88, 96, 14);
+						painelCadatroUsuario.add(textNome);
+						textNome.setVisible(true);
+						
+						JLabel TextoCPF = new JLabel("CPF");
+						TextoCPF.setBounds(10, 117, 96, 14);
+						painelCadatroUsuario.add(TextoCPF);
+						TextoCPF.setVisible(true);
+						
+						JLabel TextoSenha = new JLabel("SENHA");
+						TextoSenha.setBounds(10, 142, 96, 14);
+						painelCadatroUsuario.add(TextoSenha);
+						TextoSenha.setVisible(true);
+						
+						camponome = new JTextField();
+						camponome.setBounds(59, 85, 160, 20);
+						painelCadatroUsuario.add(camponome);
+						camponome.setColumns(10);
+						camponome.setVisible(true);
+						
+						campocpf = new JTextField();
+						campocpf.setBounds(59, 114, 160, 20);
+						painelCadatroUsuario.add(campocpf);
+						campocpf.setColumns(10);
+						campocpf.setVisible(true);
+						
+						//efetuar cadastro no banco//
+						
+						JButton enviarcadastro = new JButton("Cadastrar");
+						enviarcadastro.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								
+								conectar();
+								Statement s = null;
+								
+								
+								try {
+										System.out.println(camponome.getText() +","+campocpf.getText()+","+camposenha.getText());
+										System.out.println("INSERT INTO usuario (nome, cpf, senha) VALUES ("+camponome.getText() + "," +campocpf.getText()+","+camposenha.getText()+")");
+										
+								      String sql = ("INSERT INTO usuario (nome, cpf, senha) VALUES ("+ "'"+camponome.getText() +"'"+ ", " +"'"+ campocpf.getText()+"'"+", "+ "'"+camposenha.getText()+"'"+")");
+								      PreparedStatement stmt = connection.prepareStatement(sql);
+								      
+								      stmt.execute(); //executa comando   
+								      stmt.close(); 
+								      fecharconeccao();				   
+								      } catch (SQLException e1) {
+								      e1.printStackTrace();
+								    }
+								
+								
+								
+							}});
+						
+						
+						
+						enviarcadastro.setBounds(59, 192, 160, 23);
+						painelCadatroUsuario.add(enviarcadastro);
+						
+						camposenha = new JPasswordField();
+						camposenha.setBounds(59, 142, 160, 20);
+						painelCadatroUsuario.add(camposenha);
+						enviarcadastro.setVisible(true);
+						
+					}
+					
+				});	
+				
+				Bottaoindocadastro.setBounds(232, 481, 196, 23);
+				frame.getContentPane().add(Bottaoindocadastro);
+				Bottaoindocadastro.setVisible(false);
 				
 				botãoplaca.setBounds(482, 84, 89, 23);
 				frame.getContentPane().add(botãoplaca);
@@ -250,6 +364,7 @@ public class carros {
 				    	  campoplaca.setVisible(true);
 				    	  consulplaca.setVisible(true);
 				    	  botãoplaca.setVisible(true);
+				    	  Bottaoindocadastro.setVisible(true);
 				    	  
 				    	  
 				    	  
@@ -275,8 +390,13 @@ public class carros {
 		senha.setBounds(266, 244, 157, 20);
 		frame.getContentPane().add(senha);
 		
+		//visualizar conteudo
 		
 		
+		
+		
+		
+
 		
 		
 		
