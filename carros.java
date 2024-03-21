@@ -372,7 +372,7 @@ public class carros {
 				      r.close();
 				      s.close();
 				      fecharconeccao();
-;				    } catch (SQLException e1) {
+				    } catch (SQLException e1) {
 				      e1.printStackTrace();
 				    }
 				
